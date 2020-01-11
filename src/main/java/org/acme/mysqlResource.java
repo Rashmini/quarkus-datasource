@@ -30,30 +30,19 @@ public class mysqlResource {
 
             //STEP 1: Open a connection
             System.out.println("Connecting to database...");
+            System.out.println("Creating table in given database...");
             conn = dataSource.getConnection();
             stmt = conn.createStatement();
 
             //STEP 2: Execute queries
-            String sql1 =  "CREATE TABLE IF NOT EXISTS REGISTRATION " +
-                    "(id INTEGER not NULL, " +
-                    " first VARCHAR(255), " +
-                    " last VARCHAR(255), " +
-                    " age INTEGER, " +
-                    " PRIMARY KEY ( id ))";
-            String sql2 =  "INSERT INTO REGISTRATION SELECT * FROM (SELECT 100, 'Rash', 'Aaa', 22) AS tmp WHERE NOT EXISTS ( SELECT id FROM REGISTRATION WHERE id = 100 )";
-            String sql3 = "select * from REGISTRATION";
-
-            /*String sql= "DROP TABLE IF EXISTS REGISTRATION";
-            stmt.executeUpdate(sql);*/
-
-            System.out.println("Creating table in given database...");
-            stmt.executeUpdate(sql1);
+            String sql1 =  "INSERT INTO REGISTRATION SELECT * FROM (SELECT 100, 'Rash', 'Aaa', 22) AS tmp WHERE NOT EXISTS ( SELECT id FROM REGISTRATION WHERE id = 100 )";
+            String sql2 = "select * from REGISTRATION";
 
             System.out.println("Inserting records into the table...");
-            stmt.executeUpdate(sql2);
+            stmt.executeUpdate(sql1);
 
             System.out.println("Accessing data in table REGISTRATION...");
-            ResultSet rs=stmt.executeQuery(sql3);
+            ResultSet rs=stmt.executeQuery(sql2);
             while(rs.next())
                 System.out.println(rs.getString(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"  "+rs.getString(4));
 
